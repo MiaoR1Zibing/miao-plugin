@@ -268,15 +268,8 @@ let DmgCalc = {
   },
   getDmgFn (data) {
     let { showDetail, attr, ds, game } = data
-    let { calc } = ds
-    const attrWithCharacter = {
-      ...attr,
-      characterName: ds.characterName
-    }
-    const calcData = {
-      ...data,
-      attr: attrWithCharacter
-    }
+    let { calc } = ds 
+
     let dmgFn = function (pctNum = 0, talent = false, ele = false, basicNum = 0, mode = 'talent', dynamicData = false) {
       if (ele) {
         ele = erTitle[ele] || ele
@@ -285,7 +278,7 @@ let DmgCalc = {
         // 星铁meta数据天赋为百分比前数字
         pctNum = pctNum * 100
       }
-      return DmgCalc.calcRet({ pctNum, talent, ele, basicNum, mode, dynamicData }, calcData)
+      return DmgCalc.calcRet({ pctNum, talent, ele, basicNum, mode, dynamicData }, data)
     }
 
     dmgFn.basic = function (basicNum = 0, talent = false, ele = false, dynamicData = false) {
