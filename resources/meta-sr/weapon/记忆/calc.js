@@ -44,10 +44,6 @@ export default function (staticIdx, keyIdx) {
     愿虹光永驻天空: [
       staticIdx(1, 'speedPct'),
       keyIdx('装备者的忆灵施放忆灵技时，使敌方全体受到的伤害提高[enemydmg]%', 'enemydmg', 4)
-    ],
-    愿虹光永驻天空: [
-      staticIdx(1, 'speedPct'),
-      keyIdx('忆灵释放忆灵技时, 使敌方受到伤害提高[enemydmg]%', 'enemydmg', 4)
     ]
   }
 }

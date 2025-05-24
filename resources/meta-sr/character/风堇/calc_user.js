@@ -2,9 +2,8 @@ export const details = [{
   title: '【雨过天晴】提供生命上限提高',
   params: { AfterRain: true },
   dmg: ({talent, calc, cons, attr}) => {
-    let upper = cons >= 1 ? calc(attr.hp) * 0.5 : 0
-    let hpup = (calc(attr.hp) * talent.q['生命提高·百分比生命'] + talent.q['生命提高·固定值']) 
-    hpup += upper
+    let upper = cons >= 1 ? 0.5 : 0
+    let hpup = (attr.hp.base * (talent.q['生命提高·百分比生命'] + upper) + talent.q['生命提高·固定值']) 
     return {avg: hpup}
   }
 }, {
@@ -14,17 +13,17 @@ export const details = [{
 }, {
   title: '【雨过天晴】战技治疗量 - 对于单个目标',
   params: { AfterRain: true },
-  dmg: ({ talent, calc, attr }, { heal }) => heal(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'], 'e')
+  dmg: ({ talent, calc, attr }, { heal }) => heal(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'])
 }, {
   title: '无【雨过天晴】终结技治疗量 - 对于单个目标',
-  dmg: ({ talent, calc, attr }, { heal }) => heal(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'], 'q')
+  dmg: ({ talent, calc, attr }, { heal }) => heal(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'])
 }, {
-  title: 'eq进入【雨过天晴】忆灵技总伤 - 治6+对单',
+  title: 'eq总伤 - 治6+对单【雨过天晴】',
   params: { AfterRain: true },
   dmg: ({ talent, calc, cons, attr }, { basic }) => {
     let cureAmount = (5*(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'])+(calc(attr.hp)*talent.e['小伊卡治疗·百分比生命']+talent.e['小伊卡治疗·固定值'])) * (1 + calc(attr.heal) / 100 + attr.heal.inc / 100)
     cureAmount += (5*(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'])+(calc(attr.hp)*talent.q['小伊卡治疗·百分比生命']+talent.q['小伊卡治疗·固定值'])) * (1 + calc(attr.heal) / 100 + attr.heal.inc / 100)
-    let primaryDmg = basic(cureAmount * talent.me['治疗转化伤害比'])
+    let primaryDmg = basic(cureAmount * talent.me['技能伤害'])
     return {
       dmg: primaryDmg.dmg,
       avg: primaryDmg.avg
@@ -33,7 +32,7 @@ export const details = [{
 }, {
   title: '【雨过天晴】忆灵天赋治疗 - 单目标',
   params: { AfterRain: true },
-  dmg: ({ talent, calc, cons, attr }, { heal }) => heal(2 * (calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值']), 'mt')
+  dmg: ({ talent, calc, cons, attr }, { heal }) => heal(2 * (calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值']))
 }]
 
 export const defDmgIdx = 4
@@ -43,10 +42,9 @@ export const buffs = [{
   check: ({params}) => params.AfterRain === true,
   title: '终结技-飞入晨昏的我们：终结技施放时，使我方全体目标生命上限提高 [hpPlus] 点',
   data: {
-    hpPlus: ({ talent, calc, attr, cons }) =>{
-      let upper = cons >= 1 ? calc(attr.hp) * 0.5 : 0
-      let hpup = (calc(attr.hp) * talent.q['生命提高·百分比生命'] + talent.q['生命提高·固定值']) 
-      hpup += upper
+    hpPlus: ({ talent, attr, cons }) =>{
+      let upper = cons >= 1 ? 0.5 : 0
+      let hpup = (attr.hp.base * (talent.q['生命提高·百分比生命'] + upper) + talent.q['生命提高·固定值']) 
       return hpup
     }
   }
