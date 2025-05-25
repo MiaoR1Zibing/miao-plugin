@@ -279,6 +279,7 @@ let DmgCalc = {
         if (showDetail) {
           console.log('Attr', attr)
           console.log('Nums', { mode, dmgBase, atkNum, pctNum, multiNum, plusNum, dmgNum, enemydmgNum, stanceNum, cpctNum, cdmgNum, defNum, eleNum, kNum, dmgReduceNum })
+          console.log('Parts', { dmgBase , dmgNum , enemydmgNum , cpctNum , cdmgNum , defNum , kNum , dmgReduceNum })
           console.log('Ret', ret)
           console.log('\n================================================\n\n') 
         }

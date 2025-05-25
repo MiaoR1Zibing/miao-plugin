@@ -369,7 +369,7 @@ export default {
   },
   渊思寂虑的巨树: {
     2: [attr('speedPct', 6), {
-      title: '速度大于等于[_speed]时，治疗量提高[heal]%',
+      title: '速度提高 6% , 当速度大于等于[_speed]时，治疗量提高[heal]%',
       check: ({ attr }) => attr.speed >= 135,
       data: {
         _speed: ({ attr }) => attr.speed >= 180 ? 180 : 135,
@@ -378,31 +378,28 @@ export default {
     }]
   },
   烈阳惊雷的女武神: {
-    2: [attr('speedPct', 6),{
-      title: '速度提高[speedup]%',
-      data: {
-        speedup: 6
-      }
+    2: [ attr('speedPct', 6), {
+      title: '速度提高 6%'
     }],
     4: {
-      check: ({attr, cons, characterName}) => {
-        let flag = false
-        if (attr.weaponTypeName === "丰饶" || ["符玄", "遐蝶", "风堇"].includes(characterName) || ["她已闭上双眼", "我们是地火"].includes(attr.weapon.weaponTypeName) || (attr.name === "三月七" && cons >= 6)) {flag = true;}
-        return flag
+      title: '当装备者及其忆灵治疗其他人后，装备者获得【甘霖】，装备者持有【甘霖】时，速度提高 [speedPct]% , 我方全体暴击伤害提高 [cdmg]% ，该效果无法叠加。',
+      check: ({ attr, cons }) => {
+        return (
+          attr.weaponTypeName === "丰饶" ||
+          ["符玄", "遐蝶", "风堇"].includes(attr.characterName) ||
+          ["她已闭上双眼", "我们是地火"].includes(attr.weapon.name) && attr.weaponTypeName === "存护" ||
+          (attr.name === "三月七" && cons >= 6) 
+        )
       },
-      title: '当装备者及其忆灵为装备者及其忆灵以外的我方目标提供治疗后，使装备者获得【甘霖】，每回合最多触发1次，持续 2 回合。装备者持有【甘霖】时，速度提高 [speedPct]% ，我方全体暴击伤害提高 [cdmgPlus]% ，该效果无法叠加。',
       data: {
         speedPct: 6,
-        cdmgPlus: 15
+        cdmg: 15
       }
     }
   },
   恶海逐波的船长: {
-    2: [attr('cdmg', 16),{
-      title: '暴击伤害提高[cdmgPlus]%',
-      data: {
-        cdmgPlus: 16
-      }
+    2: [ attr('cdmg', 16), {
+      title: '暴击伤害提高 16%'
     }],
     4: {
       title: '装备者成为其他我方目标的技能目标时，获得1层【助力】，最多叠加 2 层。施放终结技时，若持有 2 层【助力】，消耗所有【助力】，使装备者攻击力提高 [atkPct]% ，持续 1 回合',
