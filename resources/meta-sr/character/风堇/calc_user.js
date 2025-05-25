@@ -1,45 +1,73 @@
 export const details = [{
   title: '【雨过天晴】提供生命上限提高',
   params: { AfterRain: true },
-  dmg: ({talent, calc, cons, attr}) => {
+  dmg: ({talent, cons, attr}) => {
     let upper = cons >= 1 ? 0.5 : 0
-    let hpup = (attr.hp.base * (talent.q['生命提高·百分比生命'] + upper) + talent.q['生命提高·固定值']) 
+    let hpup = (attr.hp.base * (talent.q['生命提高·百分比生命'] + upper) + talent.q['生命提高·固定值'])
     return {avg: hpup}
   }
 }, {
-  title: '【雨过天晴】普攻伤害',
+  title: '普攻伤害【雨过天晴】',
   params: { AfterRain: true },
-  dmg: ({ talent, calc, attr }, { basic }) => basic(calc(attr.hp) * talent.a['技能伤害'], 'a')
+  dmg: ({ talent, calc, attr }, { basic }) => {
+    return basic(calc(attr.hp) * talent.a['技能伤害'], 'a')
+  }
 }, {
-  title: '【雨过天晴】战技治疗量 - 对于单个目标',
+  title: '战技治疗量 - 对于单个目标【雨过天晴】',
   params: { AfterRain: true },
-  dmg: ({ talent, calc, attr }, { heal }) => heal(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'])
+  dmg: ({ talent, calc, attr }, { heal }) => {
+    let num = heal(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'])
+    return num
+  }
 }, {
-  title: '无【雨过天晴】终结技治疗量 - 对于单个目标',
-  dmg: ({ talent, calc, attr }, { heal }) => heal(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'])
+  title: '首次终结技治疗量 - 对于单个目标',
+  dmg: ({ talent, calc, attr }, { heal }) => {
+    let num = heal(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'])
+    return num
+  }
 }, {
-  title: 'eq总伤 - 治6+对单【雨过天晴】',
-  params: { AfterRain: true },
-  dmg: ({ talent, calc, cons, attr }, { basic }) => {
-    let cureAmount = (5*(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'])+(calc(attr.hp)*talent.e['小伊卡治疗·百分比生命']+talent.e['小伊卡治疗·固定值'])) * (1 + calc(attr.heal) / 100 + attr.heal.inc / 100)
-    cureAmount += (5*(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'])+(calc(attr.hp)*talent.q['小伊卡治疗·百分比生命']+talent.q['小伊卡治疗·固定值'])) * (1 + calc(attr.heal) / 100 + attr.heal.inc / 100)
-    let primaryDmg = basic(cureAmount * talent.me['技能伤害'])
+  title: 'qe两冲总伤 - 治6+对3【雨过天晴】',
+  params: { AfterRain: true, isServant: true },
+  dmg: ({ talent, calc, cons, attr }, { heal, basic }) => {
+    let dmg = 0
+    let avg = 0
+    let numq = 5*(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'])+(calc(attr.hp)*talent.q['小伊卡治疗·百分比生命']+talent.q['小伊卡治疗·固定值']) 
+    let tmp = heal(numq)
+    let cureAmount = tmp.avg 
+    tmp = basic(cureAmount, 'me')
+    dmg += tmp.dmg, avg += tmp.avg
+    cureAmount *= cons === 6 ? 0.14 : 0.5
+    let nume = 5*(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'])+(calc(attr.hp)*talent.e['小伊卡治疗·百分比生命']+talent.e['小伊卡治疗·固定值']) 
+    tmp = heal(nume)
+    cureAmount += tmp.avg
+    tmp = basic(cureAmount, 'me')
+    dmg += tmp.dmg, avg += tmp.avg 
     return {
-      dmg: primaryDmg.dmg,
-      avg: primaryDmg.avg
+      dmg: 3 * dmg,
+      avg: 3 * avg
     }
   }
 }, {
-  title: '【雨过天晴】忆灵天赋治疗 - 单目标',
+  title: '忆灵天赋治疗 - 单目标【雨过天晴】',
   params: { AfterRain: true },
-  dmg: ({ talent, calc, cons, attr }, { heal }) => heal(2 * (calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值']))
+  dmg: ({ talent, calc, attr }, { heal }) => heal(2 * (calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值']))
+}, {
+  title: '风堇局内 - 最终生命提升值 | 最终生命值：',
+  params: { AfterRain: true }, 
+  dmg: ({ calc, attr, cons, talent }) => {
+    let upper = cons >= 1 ? 0.5 : 0
+    let hpup = (attr.hp.base * (talent.q['生命提高·百分比生命'] + upper) + talent.q['生命提高·固定值'])
+    if (calc(attr.speed) > 200) hpup += attr.hp.base * 0.2
+    let hpfinal = calc(attr.hp)
+    return { dmg: hpup, avg : hpfinal }
+  }
 }]
 
 export const defDmgIdx = 4
 export const mainAttr = 'hp,speed,cdmg'
 
 export const buffs = [{
-  check: ({params}) => params.AfterRain === true,
+  check: ({ params }) => params.AfterRain === true,
   title: '终结技-飞入晨昏的我们：终结技施放时，使我方全体目标生命上限提高 [hpPlus] 点',
   data: {
     hpPlus: ({ talent, attr, cons }) =>{
@@ -48,7 +76,8 @@ export const buffs = [{
       return hpup
     }
   }
-},{
+},{ 
+  check: ({ params }) => params.isServant === true,
   title: '天赋-疗愈世间的晨曦：提供治疗后, 小伊卡造成的伤害提高 [_dmmgup] %, 最多可叠加3层至 [dmg]%',
   data: {
     dmg: ({ talent }) => talent.t['伤害提高'] * 100 * 3, 
@@ -80,12 +109,12 @@ export const buffs = [{
     }
   }
 }, {
-  check: ({calc, attr}) => {Math.floor(calc(attr.speed) - 200) > 0},
-  title: '行迹-暴风停歇2：根据超出 200 的部分的速度提高了 [healInc]% 的治疗量',
+  title: '行迹-暴风停歇2：根据超出 200 的部分的速度提高了 [heal]% 的治疗量',
   tree: 3,
   sort: 9,
+  check: ({ calc, attr }) => calc(attr.speed) > 200,
   data: {
-    healInc: ({ calc, attr }) => {
+    heal: ({ calc, attr }) => {
       let num = Math.min(Math.max(Math.floor(calc(attr.speed) - 200), 0), 200)
       if (num > 0) {
         return num
@@ -112,7 +141,7 @@ export const buffs = [{
   cons: 4,
   sort: 9,
   data: {
-    cdmg: ({attr, calc}) => {
+    cdmg: ({ attr, calc }) => {
       let num = Math.min(Math.max(Math.floor(calc(attr.speed) - 200), 0), 200)
       if (num > 0) {
         return 2 * num

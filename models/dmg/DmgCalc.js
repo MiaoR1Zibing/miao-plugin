@@ -170,7 +170,7 @@ let DmgCalc = {
       }
     }
 
-    let dmgBase = (mode === 'basic') ? basicNum * (1 + multiNum) + plusNum : atkNum * pctNum * (1 + multiNum) + plusNum
+    let dmgBase = (mode === 'basic') ? basicNum * (1 + multiNum) + plusNum : atkNum * pctNum * (1 + multiNum) + plusNum 
     let ret = {}
 
     switch (ele) {
@@ -258,11 +258,32 @@ let DmgCalc = {
       }
     }
 
-    if (showDetail) {
-      console.log('Attr', attr)
-      console.log({ mode, dmgBase, atkNum, pctNum, multiNum, plusNum, dmgNum, enemydmgNum, stanceNum, cpctNum, cdmgNum, defNum, eleNum, kNum, dmgReduceNum })
-      console.log('Ret', ret)
-    }
+    switch(mode){ 
+      case 'heal': {
+        let healBase = basicNum
+        let healNum = 1 + calc(attr.heal)/100 + attr.heal.inc/100
+        let healReduceNum = 1
+        ret = {
+          avg: healBase * healNum * healReduceNum
+        }
+        if (showDetail) {
+          console.log('Attr', attr)
+          console.log('Nums', { mode, healBase, healNum, healReduceNum })
+          console.log('Ret', ret)
+          console.log('\n================================================\n\n')
+        }
+        break
+      }
+
+      default: { 
+        if (showDetail) {
+          console.log('Attr', attr)
+          console.log('Nums', { mode, dmgBase, atkNum, pctNum, multiNum, plusNum, dmgNum, enemydmgNum, stanceNum, cpctNum, cdmgNum, defNum, eleNum, kNum, dmgReduceNum })
+          console.log('Ret', ret)
+          console.log('\n================================================\n\n') 
+        }
+      }
+    } 
 
     return ret
   },
@@ -315,16 +336,11 @@ let DmgCalc = {
 
     dmgFn.dynamic = function (pctNum = 0, talent = false, dynamicData = false, ele = false) {
       return dmgFn(pctNum, talent, ele, 0, 'talent', dynamicData)
-    }
+    } 
 
     // 计算治疗
-    dmgFn.heal = function (num) {
-      if (showDetail) {
-        console.log(num, calc(attr.heal), attr.heal.inc)
-      }
-      return {
-        avg: num * (1 + calc(attr.heal) / 100 + attr.heal.inc / 100)
-      }
+    dmgFn.heal = function (basicNum = 0, talent = false, ele = false, dynamicData = false) {
+      return dmgFn(0, talent, ele, basicNum, 'heal', dynamicData)
     }
 
     // 计算护盾
