@@ -18,10 +18,6 @@ export const details = [{
   dmg: ({ talent, calc, attr }, { heal }) => {
     let perHeal = heal(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值'])
     let num = perHeal.avg
-    if ( attr.weapon.name === '愿虹光永驻天空') {
-      let servantHeal = heal(calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值'])
-      num += 2 * servantHeal.avg
-    }
     return {
       avg: Math.floor(num)
     }
@@ -46,10 +42,6 @@ export const details = [{
   dmg: ({ talent, calc, attr }, { heal }) => {
     let perHeal = heal(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值'])
     let num = perHeal.avg
-    if ( attr.weapon.name === '愿虹光永驻天空') {
-      let servantHeal = heal(calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值'])
-      num += 2 * servantHeal.avg
-    }
     return {
       avg: Math.floor(num)
     }
