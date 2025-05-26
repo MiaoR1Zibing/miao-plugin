@@ -68,6 +68,15 @@ export const details = [{
     // 那么, 可分为包含全队烧血C与 不包含 2种
     // 3动一轮循环主动烧血计数, 就算他烧2次, 对应perHeal 2*7+2*6 = 26次(单位变化, 折中), 2+2*6-1 = 13次
     // 这时候按照累积状态, 烧血取18次治疗
+    
+    // 更新, 忘记计算风堇1魂队友攻击顺带的治疗了. 
+    // 这部分怎么计算呢, 不妨考虑队伍 |遐蝶|缇宝|风堇|记忆主|, 满buff状态场上有7个单位, 其中绝大多数技能都是攻击
+    // 考虑: 风堇3~4动循环内
+    // 缇宝3次追击, 1次大招 --4次
+    // 遐蝶2条死龙, 死龙攻击6+2次, 遐蝶攻击3+2次(加号是连携攻击) --13次
+    // 记忆主3动, eqaa3次, 迷迷喷射2次 --5次
+    // 风堇 qaee或者qaae, 前者4次, 后者6次, 算5次
+    // 那么这个队伍总共27次, 算他9次.(考虑到追击队动数多但是烧血少, 应该两者相抵, 就这么算9次)
 
     // 考虑循环1: q[进状态]ae[退状态]e[召唤忆灵] (非风堇回合开大) 
     // 考虑情况1: [雨过天晴中断][召唤返还能量]
@@ -111,8 +120,11 @@ export const details = [{
     let numHit = 6 * HealServant
     // 队友主动烧血治疗量
     let numConsume = 18 * HealServant
+    // 1魂攻击附加治疗量
+    let HealCon1 = cons > 0 ? heal(calc(attr.hp)*0.08) : {avg: 0}
+    let numCon1 = 9 * HealCon1.avg
     // 治疗累积值
-    let cureAmount = numEQ + numHit + numConsume 
+    let cureAmount = numEQ + numHit + numConsume + numCon1
     // 计算稳定累积治疗值并乘0.8以参考 (经验值, 以代替等比数列的循环求和计算, 可改)
     let exprVal = 0.8
     let cureMaxRate = cons === 6 ? 1/(1-0.88) : 1/(1-0.5)
@@ -152,8 +164,11 @@ export const details = [{
     let numHit = 6 * HealServant
     // 队友主动烧血治疗量
     let numConsume = 0
+    // 1魂攻击附加治疗量
+    let HealCon1 = cons > 0 ? heal(calc(attr.hp)*0.08) : {avg: 0}
+    let numCon1 = 9 * HealCon1.avg
     // 治疗累积值
-    let cureAmount = numEQ + numHit + numConsume 
+    let cureAmount = numEQ + numHit + numConsume + numCon1 
     // 计算稳定累积治疗值并乘0.8以参考 (经验值, 以代替等比数列的循环求和计算, 可改)
     let exprVal = 0.8
     let cureMaxRate = cons === 6 ? 1/(1-0.88) : 1/(1-0.5)
@@ -171,6 +186,16 @@ export const details = [{
   params: { AfterRain: true },
   dmg: ({ talent, calc, attr }, { heal }) => {
     let perHeal = heal(calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值'])
+    return{
+      avg: Math.floor(perHeal.avg)
+    }
+  }
+}, {
+  check: ({ cons }) => cons > 0,
+  title: '一魂攻击回复 - 对于单个目标【雨过天晴】',
+  params: { AfterRain: true },
+  dmg: ({ calc, attr }, { heal }) => {
+    let perHeal = heal(calc(attr.hp) * 0.08)
     return{
       avg: Math.floor(perHeal.avg)
     }
