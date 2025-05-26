@@ -284,13 +284,13 @@ let DmgCalc = {
           console.log('\n================================================\n\n') 
         }
       }
-    } 
+    }
 
     return ret
   },
   getDmgFn (data) {
     let { showDetail, attr, ds, game } = data
-    let { calc } = ds 
+    let { calc } = ds
 
     let dmgFn = function (pctNum = 0, talent = false, ele = false, basicNum = 0, mode = 'talent', dynamicData = false) {
       if (ele) {
@@ -337,7 +337,7 @@ let DmgCalc = {
 
     dmgFn.dynamic = function (pctNum = 0, talent = false, dynamicData = false, ele = false) {
       return dmgFn(pctNum, talent, ele, 0, 'talent', dynamicData)
-    } 
+    }
 
     // 计算治疗
     dmgFn.heal = function (basicNum = 0, talent = false, ele = false, dynamicData = false) {
