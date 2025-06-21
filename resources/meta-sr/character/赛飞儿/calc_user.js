@@ -1,18 +1,12 @@
 export const details = [{
   title: '普攻伤害',
-  dmg: ({ talent }, dmg) => {
-    return dmg(talent.a['技能伤害'], 'a')
-  }
+  dmg: ({ talent }, dmg) => dmg(talent.a['技能伤害'], 'a')
 }, {
   title: '天赋追加伤害',
-  dmg: ({ talent }, dmg) => {
-    dmg(talent.t['技能伤害'], 't')
-  }
+  dmg: ({ talent }, dmg) => dmg(talent.t['技能伤害'], 't')
 }, {
   title: '战技伤害-中心目标',
-  dmg: ({ talent }, dmg) => {
-    dmg(talent.e['技能伤害'], 'e')
-  }
+  dmg: ({ talent }, dmg) => dmg(talent.e['技能伤害'], 'e')
 }, {
   title: '终结技0记录值保底伤害-对单',
   dmg: ({ talent, cons, attr }, dmg) => {
