@@ -18,19 +18,19 @@ export const details = [{
   dmg: ({ talent, cons, attr }, dmg) => {
     let a_dmg = dmg(talent.q['技能伤害'], `q`)
     let b_dmg = dmg(talent.q['相邻目标伤害'], `q`)
-    let _ratio = 0.12 
+    let _ratio = 0.12
     if (attr.speed >= 140) {
       _ratio *= attr.speed >= 170 ? 2 : 1.5
     }
     if (cons === 6) {
       _ratio *= 1.248
     } 
-    if (cons > 0) { 
-      _ratio *= 1.5 
+    if (cons > 0) {
+      _ratio *= 1.5
     }
     let _dmg = {
       dmg: a_dmg.dmg+b_dmg.dmg+(2*a_dmg.dmg+b_dmg.dmg)*_ratio,
-      avg: a_dmg.avg+b_dmg.avg+(2*a_dmg.avg+b_dmg.avg)*_ratio,
+      avg: a_dmg.avg+b_dmg.avg+(2*a_dmg.avg+b_dmg.avg)*_ratio
     }
     return _dmg
   }

@@ -70,7 +70,7 @@ export const details = [{
     // 风堇 qaee或者qaae, 前者4次, 后者6次, 算5次
     // 那么这个队伍总共27次, 算他9次.(考虑到追击队动数多但是烧血少, 应该两者相抵, 就这么算9次)
 
-    // 考虑循环1: q[进状态]ae[退状态]e[召唤忆灵] (非风堇回合开大) 
+    // 考虑循环1: q[进状态]ae[退状态]e[召唤忆灵] (非风堇回合开大)
     // 考虑情况1: [雨过天晴中断][召唤返还能量]
     //  5+5 + 20+5 + 30+5 + 30+15 = 105点能量, 需要充能绳+受击1次 或者 无充能绳受击2次
     
@@ -101,11 +101,11 @@ export const details = [{
       cureDelta += 13 * HealServant   // 11是因为, 我方一共7个目标的前提下, 天赋6次, 雨过天晴全体算7次
     }
     // 释放e
-    let healE = heal(6*(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值']) + 1 * (calc(attr.hp)*talent.e['小伊卡治疗·百分比生命']+talent.e['小伊卡治疗·固定值'])) 
+    let healE = heal(6*(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值']) + 1 * (calc(attr.hp)*talent.e['小伊卡治疗·百分比生命']+talent.e['小伊卡治疗·固定值']))
     let nume = healE.avg + cureDelta
     // 释放q
-    let healQ = heal(6*(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值']) + 1 * (calc(attr.hp)*talent.q['小伊卡治疗·百分比生命']+talent.q['小伊卡治疗·固定值'])) 
-    let numq = healQ.avg + cureDelta 
+    let healQ = heal(6*(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值']) + 1 * (calc(attr.hp)*talent.q['小伊卡治疗·百分比生命']+talent.q['小伊卡治疗·固定值']))
+    let numq = healQ.avg + cureDelta
     // 风堇技能平均治疗
     let numEQ = (nume*2+numq*1)/3
     // 受击治疗量
@@ -123,7 +123,7 @@ export const details = [{
     cureAmount *= (cons === 6 ? 3.4 : 1.6)
     // 计算伤害
     let tmp = basic(cureAmount * talent.me['技能伤害'], 'me')
-    dmg += tmp.dmg, avg += tmp.avg 
+    dmg += tmp.dmg, avg += tmp.avg
     return {
       dmg: dmg,
       avg: avg
@@ -135,7 +135,7 @@ export const details = [{
   params: { AfterRain: true, isServant: true },
   dmg: ({ talent, calc, cons, attr }, { heal, basic }) => {
     let dmg = 0
-    let avg = 0 
+    let avg = 0
     // 小伊卡治疗单个其他单位治疗量
     let perHeal = heal(calc(attr.hp) * talent.mt['治疗·百分比生命'] + talent.mt['治疗·固定值'])
     let HealServant = perHeal.avg
@@ -145,11 +145,11 @@ export const details = [{
       cureDelta += 11 * HealServant   // 11是因为, 我方一共6个目标的前提下, 天赋5次, 雨过天晴全体算6次
     }
     // 释放e
-    let healE = heal(5*(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值']) + 1 * (calc(attr.hp)*talent.e['小伊卡治疗·百分比生命']+talent.e['小伊卡治疗·固定值'])) 
+    let healE = heal(5*(calc(attr.hp) * talent.e['治疗·百分比生命'] + talent.e['治疗·固定值']) + 1 * (calc(attr.hp)*talent.e['小伊卡治疗·百分比生命']+talent.e['小伊卡治疗·固定值']))
     let nume = healE.avg + cureDelta
     // 释放q
-    let healQ = heal(5*(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值']) + 1 * (calc(attr.hp)*talent.q['小伊卡治疗·百分比生命']+talent.q['小伊卡治疗·固定值'])) 
-    let numq = healQ.avg + cureDelta 
+    let healQ = heal(5*(calc(attr.hp) * talent.q['治疗·百分比生命'] + talent.q['治疗·固定值']) + 1 * (calc(attr.hp)*talent.q['小伊卡治疗·百分比生命']+talent.q['小伊卡治疗·固定值']))
+    let numq = healQ.avg + cureDelta
     // 风堇技能平均治疗
     let numEQ = (nume*2+numq*1)/3
     // 受击治疗量
@@ -213,7 +213,7 @@ export const buffs = [{
   data: {
     hpPlus: ({ talent, attr, cons }) =>{
       let upper = cons >= 1 ? 0.5 : 0
-      let hpup = (attr.hp.base * (talent.q['生命提高·百分比生命'] + upper) + talent.q['生命提高·固定值']) 
+      let hpup = (attr.hp.base * (talent.q['生命提高·百分比生命'] + upper) + talent.q['生命提高·固定值'])
       return hpup
     }
   }
@@ -221,7 +221,7 @@ export const buffs = [{
   check: ({ params }) => params.isServant === true,
   title: '天赋-疗愈世间的晨曦：提供治疗后, 小伊卡造成的伤害提高 [_dmmgup] %, 最多可叠加3层至 [dmg]%',
   data: {
-    dmg: ({ talent }) => talent.t['伤害提高'] * 100 * 3, 
+    dmg: ({ talent }) => talent.t['伤害提高'] * 100 * 3,
     _dmmgup: ({talent}) => talent.t['伤害提高'] * 100
   }
 }, {
