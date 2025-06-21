@@ -1,27 +1,23 @@
 export const details = [{
   title: '普攻伤害',
-  dmg: ({ talent, cons }, dmg) => {
-    let _plus = cons > 3 ? 0.5 : 0
-    return dmg(talent.a['技能伤害']+_plus, 'a')
+  dmg: ({ talent }, dmg) => {
+    return dmg(talent.a['技能伤害'], 'a')
   }
 }, {
   title: '天赋追加伤害',
-  dmg: ({ talent, cons }, dmg) => {
-    let _plus = cons > 3 ? 0.5 : 0
-    dmg(talent.t['技能伤害']+_plus, 't')
+  dmg: ({ talent }, dmg) => {
+    dmg(talent.t['技能伤害'], 't')
   }
 }, {
   title: '战技伤害-中心目标',
-  dmg: ({ talent, cons }, dmg) => {
-    let _plus = cons > 3 ? 0.5 : 0
-    dmg(talent.e['技能伤害']+_plus, 'e')
+  dmg: ({ talent }, dmg) => {
+    dmg(talent.e['技能伤害'], 'e')
   }
 }, {
   title: '终结技0记录值保底伤害-对单',
   dmg: ({ talent, cons, attr }, dmg) => {
-    //赛飞儿终结技释放时, 先计算造成的全部量子伤害(保底值), 接着更新【老主顾】记录值, 然后计算并分配真伤, 最后动画演出显示伤害跳字
-    let a_dmg = dmg(talent.q['技能伤害']+talent.q['相邻目标伤害']+_plus, `q`)
-    let _plus = cons > 3 ? 0.5 : 0
+    let a_dmg = dmg(talent.q['技能伤害'], `q`)
+    let b_dmg = dmg(talent.q['相邻目标伤害'], `q`)
     let _ratio = 0.12 
     if (attr.speed >= 140) {
       _ratio *= attr.speed >= 170 ? 2 : 1.5
@@ -33,11 +29,15 @@ export const details = [{
       _ratio *= 1.5 
     }
     let _dmg = {
-      dmg: (a_dmg.dmg)*(1+_ratio),
-      avg: (a_dmg.avg)*(1+_ratio),
+      dmg: a_dmg.dmg+b_dmg.dmg+(2*a_dmg.dmg+b_dmg.dmg)*_ratio,
+      avg: a_dmg.avg+b_dmg.avg+(2*a_dmg.avg+b_dmg.avg)*_ratio,
     }
     return _dmg
   }
+}, {
+  title: '4魂附加伤害',
+  cons: 4,
+  dmg: ({ talent }, dmg) => dmg(0.5)
 }]
 
 export const defDmgIdx = 1
@@ -58,7 +58,7 @@ export const buffs = [{
   title: '行迹-偷天换日：天赋的追加攻击造成的暴击伤害提高 100% 。赛飞儿在场时，敌方全体目标受到的伤害提高 40%',
   tree: 3,
   data: {
-    cdmg: 100,
+    tCdmg: 100,
     enemydmg: 40
   }
 }, {
@@ -80,7 +80,7 @@ export const buffs = [{
   title: '赛飞儿6魂：赛飞儿天赋的追加攻击造成的伤害提高 350% ，记录时额外记录该攻击造成的非溢出伤害的 16% 。施放终结技清空记录值后，返还本次清除记录值的 20% ',
   cons: 6,
   data: {
-    tdmg: 350
+    tDmg: 350
  }
 }]
 
