@@ -81,7 +81,20 @@ const ProfileAvatar = {
     if (!isGs && profile.trees) {
       treeSuper = true
       lodash.forEach(profile.trees, (tree, idx) => {
-        if (!tree.includes(treeSet[idx])) {
+        console.log(`[DEBUG] idx=${idx}, tree=`, tree)
+        console.log(`[DEBUG] typeof tree=`, typeof tree)
+        console.log(`[DEBUG] Array.isArray(tree)=`, Array.isArray(tree))
+        console.log(`[DEBUG] tree.id=`, tree?.id)
+        const expected = treeSet[idx]
+        if (typeof tree === 'string' || Array.isArray(tree)) {
+          if (!tree.includes(expected)) {
+            treeSuper = false
+          }
+        } else if (tree?.id) {
+          if (tree.id !== expected) {
+            treeSuper = false
+          }
+        } else {
           treeSuper = false
         }
       })
