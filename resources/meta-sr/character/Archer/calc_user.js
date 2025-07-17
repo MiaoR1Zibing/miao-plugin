@@ -51,24 +51,24 @@ export const buffs = [{
     dmg: ({ talent, attr }) => talent.e['战技伤害提高'] * 200
   }
 }, {
-  title: 'Archer2魂：终结技伤害提高120%',
+  title: 'Archer 2魂：施放终结技时，使敌方目标的量子属性的抗性降低[kx]%',
   cons: 2,
   data: {
-    qDmg: 120
+    kx: 20
   }
 }, {
-  title: 'Archer4魂：量子属性的抗性降低10%',
+  title: 'Archer 4魂：造成的终结技伤害提高[qDmg]%',
   cons: 4,
   data: {
-    kx: 10
+    qDmg: 150
   }
 }, {
-  check: ({ cons, params }) => params.E === true,
-  title: 'Archer6魂：战技伤害无视20%的防御力',
+  check: ({ params }) => params.cons6 === true,
+  title: 'Archer 6魂：战技伤害无视20%的防御力',
   cons: 6,
   data: {
     ignore: 20
   }
 }]
 
-export const createdBy = 'Ehya丶Calc'
+export const createdBy = 'Ehya丶Calc & 冰翼'

@@ -125,13 +125,11 @@ export default function(staticIdx, keyIdx) {
     ],
     "没有回报的加冕": [
       staticIdx(1, "cdmg"),
-      keyIdx("施放终结技时，攻击力提高[atkPct]%", "atkPct", 2),
       (tables) => {
         return {
-          check: ({ attr }) => attr.sp >= 300,
-          title: "能量上限大于等于300点，攻击力提高[atkPct]%",
+          title: "攻击力提高[atkPct]%",
           data: {
-            atkPct: tables[3]
+            atkPct: tables[2] + tables[3]
           }
         }
       }

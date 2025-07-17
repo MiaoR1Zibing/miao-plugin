@@ -116,14 +116,13 @@ export default function(staticIdx, keyIdx) {
       staticIdx(1, "cdmg"),
       keyIdx("装备者战技和追加攻击造成的伤害提高[eDmg]%", { eDmg: 2, tDmg: 2 })
     ],
-    "理想燃烧的地狱": [
-      staticIdx(1, "cpct"),
-      keyIdx("我方的战技点上限大于等于6点，使装备者的攻击力提高[atkPct]%", "atkPct", 2),
+    理想燃烧的地狱: [
+      staticIdx(1, 'cpct'),
       (tables) => {
         return {
-          title: "装备者每次施放战技后，使装备者的攻击力提高[atkPct]%，叠加4层",
+          title: '攻击力提高[atkPct]%',
           data: {
-            atkPct: tables[3] * 4
+            atkPct: tables[2] + tables[3] * 4
           }
         }
       }
