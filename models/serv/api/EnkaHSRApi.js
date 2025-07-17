@@ -38,7 +38,7 @@ export default {
 
   updatePlayer (player, data) {
     try {
-      player.setBasicData(Data.getData(data, 'name:nickname,face:headIcon,level:level,word:worldLevel,sign:signature'))
+      player.setBasicData(Data.getData(data, 'name:nickname,face:headIcon,level:level,word:level,sign:signature'))
       lodash.forEach(data.avatars, (ds, id) => {
         let ret = HomoData.setAvatar(player, ds)
         if (ret) {

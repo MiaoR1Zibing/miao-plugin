@@ -20,7 +20,7 @@
  * */
 export const enkaApi = {
   url: 'https://enka.network/', // 请求API地址，可从上方提供的API地址中进行选择
-  proxyAgent: '' // 请求的proxy配置，如无需proxy则留空
+  proxyAgent: 'http://localhost:7890' // 请求的proxy配置，如无需proxy则留空
 }
 
 /**
