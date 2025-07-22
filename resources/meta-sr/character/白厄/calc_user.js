@@ -31,9 +31,9 @@ export const details = [{
     }
   }
 }, {
-  title: '灾厄•弑魂焚诏(5层对5)',
+  title: '灾厄•弑魂焚诏(敌动5下)',
   params: { Ultimate: true },
-  dmg: ({ attr, calc, talent }, { basic }) => basic(calc(attr.atk)*(talent.e1['技能伤害']*5 + talent.e1['随机伤害']*4)*(1+0.2*5), 'e')
+  dmg: ({ attr, calc, talent, cons }, { basic }) => basic(calc(attr.atk)*(talent.e1['技能伤害']*(cons>3?10:6) + talent.e1['随机伤害']*4)*(1+0.2*5), 'e')
 }, {
   title: '创生•血棘渡亡(对主目标)',
   params: { Ultimate: true },
