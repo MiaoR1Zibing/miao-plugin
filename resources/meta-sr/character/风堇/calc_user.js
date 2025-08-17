@@ -130,7 +130,6 @@ export const details = [{
     }
   }
 }, {
-  showDetail: true,
   title: '忆灵技伤害 - 6人队对单 (无烧血C)',
   params: { AfterRain: true, isServant: true },
   dmg: ({ talent, calc, cons, attr }, { heal, basic }) => {
